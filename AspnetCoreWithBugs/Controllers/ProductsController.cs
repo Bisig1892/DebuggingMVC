@@ -33,7 +33,9 @@ namespace AspnetCoreWithBugs.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _context.AddAsync(product);
+                _context.Product.Add(product);
+                await _context.SaveChangesAsync();
+                // await _context.AddAsync(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -78,8 +80,9 @@ namespace AspnetCoreWithBugs.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Product.FindAsync(id);
+            Product product = await _context.Product.FindAsync(id);
             _context.Product.Remove(product);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
